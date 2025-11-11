@@ -10,14 +10,13 @@ $(document).ready(function () {
     let idCountdown = 0;
 
     const products = [
-        {id: 1, name: "Casque audio sans fil !",            price: 89.99,   image: "images/casqueEcoute.jpg"},
-        {id: 2, name: "Montre intelligente",                price: 199.99,  image: "images/montreIntelligente.jpg"},
-        {id: 3, name: "Sac à dos pour ordinateur portable", price: 49.99,   image: "images/sacAdos.jpg"},
-        {id: 4, name: "Haut-parleur Bluetooth",             price: 59.99,   image: "images/hautParleur.jpg"},
-        {id: 5, name: "Téléphone intelligent",              price: 699.99,  image: "images/telephoneIntelligent.jpg"},
-        {id: 6, name: "Bracelet de suivi d’activité",       price: 79.99,   image: "images/bracelet.jpg"}
+        {id: 1, name: "Casque audio sans fil !", price: 89.99, image: "images/casqueEcoute.jpg"},
+        {id: 2, name: "Montre intelligente", price: 199.99, image: "images/montreIntelligente.jpg"},
+        {id: 3, name: "Sac à dos pour ordinateur portable", price: 49.99, image: "images/sacAdos.jpg"},
+        {id: 4, name: "Haut-parleur Bluetooth", price: 59.99, image: "images/hautParleur.jpg"},
+        {id: 5, name: "Téléphone intelligent", price: 699.99, image: "images/telephoneIntelligent.jpg"},
+        {id: 6, name: "Bracelet de suivi d’activité", price: 79.99, image: "images/bracelet.jpg"}
     ];
-
 
 
     /**
@@ -80,9 +79,10 @@ $(document).ready(function () {
             - appelle la méthode pour mettre à jour l'affichage du cart.
          */
 
+        $("#depenses-totales").text(ventesTotales);
 
-
-
+        renderProducts();
+        updateCartDisplay();
     }
 
     /**
@@ -93,9 +93,10 @@ $(document).ready(function () {
     function configureButtons() {
 
 
-
-
-
+        $("#clear-total").click(function () {
+            ventesTotales = 0;
+            $("#depenses-totales").text(ventesTotales);
+        });
     }
 
 
@@ -104,9 +105,10 @@ $(document).ready(function () {
      */
     function renderProducts() {
 
-
-
-
+        products.forEach(prod => {
+            const prodhtml = createProduct(prod);
+            $("#products-container").append(prodhtml);
+        });
     }
 
     /**
@@ -116,15 +118,13 @@ $(document).ready(function () {
     function addToCart(productId) {
 
 
-
     }
 
 
     /**
      * Met à jour le nombre d'item dans le cart.
      */
-    function updateCartCount(){
-
+    function updateCartCount() {
 
 
     }
@@ -134,8 +134,6 @@ $(document).ready(function () {
      * @returns {{subtotal: number, shipping: number, total: *}}
      */
     function calculatePrices() {
-
-
 
 
     }
@@ -175,17 +173,14 @@ $(document).ready(function () {
     function updatePrice(prices) {
 
 
-
     }
-	/**
+
+    /**
      *     Ajoute ou retire 1 à la quantité du produit sur lequel on vient de cliquer.
      * @param event l'événement
      * @param delta + ou - 1
      */
     function changeQuantity(event, delta) {
-
-
-
 
 
     }
@@ -214,7 +209,6 @@ $(document).ready(function () {
     }
 
 
-
-        initStore();
-		configureButtons();
+    initStore();
+    configureButtons();
 });

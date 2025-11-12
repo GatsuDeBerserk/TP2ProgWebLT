@@ -94,7 +94,7 @@ $(document).ready(function () {
      *
      */
     function configureButtons() {
-
+        order-confirmation
 
         $("#cart-button").click(function () {
             $(".cart-section").toggle();
@@ -197,8 +197,15 @@ $(document).ready(function () {
      * @param prices
      */
     function updatePrice(prices) {
-
-
+        let mod=0;//modificateurPrixPourAnnulerLivraisonDansTotal
+        $("#subtotal").text((Math.round(prices.subtotal * 100) / 100)+' $');
+        if (cart.length<1){
+            $("#shipping").text('0,00 $');
+            mod=5
+        }else {
+            $("#shipping").text('5,00 $');
+        }
+        $("#total").text((Math.round((prices.total-mod) * 100) / 100)+' $');
     }
 
     /**
@@ -241,6 +248,8 @@ $(document).ready(function () {
      * Efface le contenu du cart et mets à jour l'affichage de ce dernier.
      */
     function clearCart() {
+        cart=[];
+        updateCartDisplay();
 
     }
 

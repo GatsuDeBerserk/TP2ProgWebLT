@@ -253,16 +253,9 @@ $(document).ready(function () {
      * @param event
      */
     function removeItem(event) {
-        let tempTable = [];
-        console.log(event);
         let itemID = event.target.dataset.id;
         console.log(itemID);
-        cart.forEach(item => {
-            if (item.id != itemID) {
-                tempTable.push(item);
-            }
-        });
-        cart = tempTable;
+        cart = cart.filter(item => item.id != itemID);
         updateCartDisplay();
     }
 
@@ -292,6 +285,8 @@ $(document).ready(function () {
                 if (tempsRestant === -1) {
                     clearInterval(interval);
                     $("#order-confirmation").fadeOut();
+                    clearCart();
+                    updateCartDisplay();
                 }
             }, 1000);
         }

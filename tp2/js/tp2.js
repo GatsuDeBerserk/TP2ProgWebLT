@@ -80,9 +80,12 @@ $(document).ready(function () {
          */
 
         $("#depenses-totales").text(ventesTotales);
-
         renderProducts();
         updateCartDisplay();
+        $(".add-to-cart").click(function () {
+            addToCart($(this).attr("data-id"));
+            updateCartDisplay();
+        });
     }
 
     /**
@@ -104,7 +107,6 @@ $(document).ready(function () {
      * Affiche les produits disponibles dans la section centrale de la page.
      */
     function renderProducts() {
-
         products.forEach(prod => {
             const prodhtml = createProduct(prod);
             $("#products-container").append(prodhtml);
@@ -116,8 +118,25 @@ $(document).ready(function () {
      * @param productId l'id du porduit à ajouter.
      */
     function addToCart(productId) {
-
-
+        const prodAjout = products[productId - 1];
+        const itemToAdd = {
+            id: prodAjout.id,
+            image: prodAjout.image,
+            name: prodAjout.name,
+            price: prodAjout.price,
+            quantity: 1
+        };
+        let itemDoitEtreAjouter = true;
+        cart.forEach(cartItem => {
+            if (cartItem.id === itemToAdd.id) {
+                cartItem.quantity += 1;
+                itemDoitEtreAjouter = false;
+            }
+        });
+        if (itemDoitEtreAjouter) {
+            cart.push(itemToAdd);
+        }
+        console.log('ajout de ---------' + itemToAdd.name);
     }
 
 

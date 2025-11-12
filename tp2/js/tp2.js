@@ -93,17 +93,17 @@ $(document).ready(function () {
      *
      */
     function configureButtons() {
-        $("#checkout-btn").click(function (){
+        $("#checkout-btn").click(function () {
             checkout();
         });
 
-        $("#checkout-confirmation").click(function (){
-           ventesTotales+=actualPrices.total;
-           updateVentesTotal()
+        $("#checkout-confirmation").click(function () {
+            ventesTotales += actualPrices.total;
+            updateVentesTotal()
             $("#order-confirmation").fadeOut();
             clearCart();
         });
-        $("#cancel-checkout").click(function (){
+        $("#cancel-checkout").click(function () {
             $("#order-confirmation").fadeOut();
             clearCart();
         });
@@ -154,6 +154,15 @@ $(document).ready(function () {
             cart.push(itemToAdd);
         }
         console.log('ajout de ---------' + itemToAdd.name);
+        $(".cart-count").css({
+            transition: 'transform 300ms ease-in-out',
+            transform: 'scale(5)'
+        });
+        setTimeout(() => {
+            $(".cart-count").css({
+                transform: 'scale(1)'
+            });
+        }, 300);
     }
 
 
@@ -173,10 +182,10 @@ $(document).ready(function () {
      */
     function calculatePrices() {
         let prix = 0;
-        let ship=5;
+        let ship = 5;
         cart.forEach(item => prix += item.price);
-        if (cart.length<1){
-            ship=0;
+        if (cart.length < 1) {
+            ship = 0;
         }
         return {subtotal: prix, shipping: ship, total: prix + ship};
     }
@@ -214,10 +223,10 @@ $(document).ready(function () {
      * @param prices
      */
     function updatePrice(prices) {
-        let mod=0;//modificateurPrixPourAnnulerLivraisonDansTotal
-        $("#subtotal").text((Math.round(prices.subtotal * 100) / 100)+' $');
-        $("#shipping").text((Math.round(prices.shipping * 100) / 100)+' $');
-        $("#total").text((Math.round((prices.total-mod) * 100) / 100)+' $');
+        let mod = 0;//modificateurPrixPourAnnulerLivraisonDansTotal
+        $("#subtotal").text((Math.round(prices.subtotal * 100) / 100) + ' $');
+        $("#shipping").text((Math.round(prices.shipping * 100) / 100) + ' $');
+        $("#total").text((Math.round((prices.total - mod) * 100) / 100) + ' $');
     }
 
     /**
@@ -227,7 +236,7 @@ $(document).ready(function () {
      */
     function changeQuantity(event, delta) {
 
-        itemID = event.target.dataset.id;
+        let itemID = event.target.dataset.id;
         cart.forEach(item => {
             if (item.id == itemID) {
                 item.quantity += delta;
@@ -245,7 +254,8 @@ $(document).ready(function () {
      */
     function removeItem(event) {
         let tempTable = [];
-        itemID = event.target.dataset.id;
+        console.log(event);
+        let itemID = event.target.dataset.id;
         console.log(itemID);
         cart.forEach(item => {
             if (item.id != itemID) {
@@ -260,7 +270,7 @@ $(document).ready(function () {
      * Efface le contenu du cart et mets à jour l'affichage de ce dernier.
      */
     function clearCart() {
-        cart=[];
+        cart = [];
         updateCartDisplay();
     }
 
@@ -268,14 +278,15 @@ $(document).ready(function () {
      * Confirme ou infirme l'achat des produits dans le cart.
      */
     function checkout() {
-        if (cart.length>0){
+        if (cart.length > 0) {
             $("#order-confirmation").fadeIn();
             // $("#order-confirmation").FadeIn(0).delay(confirmationDelay).fadeOut();
-
+            // set timer
             // clearCart()
         }
     }
-    function updateVentesTotal(){
+
+    function updateVentesTotal() {
         $("#depenses-totales").text(Math.round(ventesTotales * 100) / 100);
     }
 

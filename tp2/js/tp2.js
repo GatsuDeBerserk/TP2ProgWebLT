@@ -188,7 +188,7 @@ $(document).ready(function () {
             });
             $('.decrease').on('click', e => changeQuantity(e, -1));
             $('.increase').on('click', e => changeQuantity(e, 1));
-            $('.remove-item').on('click', e => removeItem(e,$(this)));
+            $('.remove-item').on('click', e => removeItem(e));
         }
     }
 
@@ -208,19 +208,33 @@ $(document).ready(function () {
      */
     function changeQuantity(event, delta) {
 
-
+        itemID = event.target.dataset.id;
+        cart.forEach(item => {
+            if (item.id == itemID) {
+                item.quantity += delta;
+                if (item.quantity == 0) {
+                    removeItem(event);
+                }
+            }
+        });
+        updateCartDisplay();
     }
 
     /**
      * Retire du cart le produit sur lequel on vient de cliquer.
      * @param event
      */
-    function removeItem(eve,id) {
-        // console.log(event.currentTarget.attr("data-id"));
-        // itemID = event.attr("data-id");
-        // cart=(cart.filter(!(id===itemID)));
-        // cart.forEach(item =>{if (tem.id===itemID){cart.delete(item)}});
-        console.log($(eve).attr("data-id"));
+    function removeItem(event) {
+        let tempTable = [];
+        itemID = event.target.dataset.id;
+        console.log(itemID);
+        cart.forEach(item => {
+            if (item.id != itemID) {
+                tempTable.push(item);
+            }
+        });
+        cart = tempTable;
+        updateCartDisplay();
     }
 
     /**

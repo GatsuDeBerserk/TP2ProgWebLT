@@ -156,7 +156,7 @@ $(document).ready(function () {
         console.log('ajout de ---------' + itemToAdd.name);
         $(".cart-count").css({
             transition: 'transform 300ms ease-in-out',
-            transform: 'scale(5)'
+            transform: 'scale(1.5)'
         });
         setTimeout(() => {
             $(".cart-count").css({
@@ -283,6 +283,17 @@ $(document).ready(function () {
             // $("#order-confirmation").FadeIn(0).delay(confirmationDelay).fadeOut();
             // set timer
             // clearCart()
+            $("#confirmation-delay").text(5);
+            let tempsRestant = (confirmationDelay / 1000) - 1;
+            const interval = setInterval(() => {
+                $("#confirmation-delay").text(tempsRestant);
+                console.log(tempsRestant);
+                tempsRestant--;
+                if (tempsRestant === -1) {
+                    clearInterval(interval);
+                    $("#order-confirmation").fadeOut();
+                }
+            }, 1000);
         }
     }
 

@@ -33,10 +33,10 @@ $(document).ready(function () {
                             <div class="cart-item-price">${item.price.toFixed(2)} $</div>
                         </div>
                         <div class="cart-item-controls">
-                            <button id="dec${item.id}" class="quantity-btn decrease" data-id="${item.id}">-</button>
+                            <button class="quantity-btn decrease" data-id="${item.id}">-</button>
                             <span class="item-quantity">${item.quantity}</span>
-                            <button id="inc${item.id}" class="quantity-btn increase" data-id="${item.id}">+</button>
-                            <button id="rem${item.id}" class="remove-item" data-id="${item.id}">×</button>
+                            <button class="quantity-btn increase" data-id="${item.id}">+</button>
+                            <button class="remove-item" data-id="${item.id}">×</button>
                         </div>
                     </div>`;
         return itemHtml;
@@ -78,8 +78,7 @@ $(document).ready(function () {
             - affiche tous les produits disponibles en appelant la méthode renderProducts
             - appelle la méthode pour mettre à jour l'affichage du cart.
          */
-
-        $("#depenses-totales").text(ventesTotales);
+        updateVentesTotal()
         renderProducts();
         updateCartDisplay();
         $(".add-to-cart").click(function () {
@@ -94,15 +93,29 @@ $(document).ready(function () {
      *
      */
     function configureButtons() {
-        order-confirmation
+        $("#checkout-btn").click(function (){
+            checkout();
+        });
+
+        $("#checkout-confirmation").click(function (){
+           ventesTotales+=actualPrices.total;
+           updateVentesTotal()
+            $("#order-confirmation").fadeOut();
+            clearCart();
+        });
+        $("#cancel-checkout").click(function (){
+            $("#order-confirmation").fadeOut();
+            clearCart();
+        });
+
 
         $("#cart-button").click(function () {
             $(".cart-section").toggle();
-        })
+        });
 
         $("#clear-total").click(function () {
             ventesTotales = 0;
-            $("#depenses-totales").text(ventesTotales);
+            updateVentesTotal()
         });
     }
 
@@ -150,7 +163,7 @@ $(document).ready(function () {
     function updateCartCount() {
         let nb = 0;
         cart.forEach(item => nb += item.quantity);
-        $(".cart-count").text(nb)
+        $(".cart-count").text(nb);
 
     }
 
@@ -160,8 +173,12 @@ $(document).ready(function () {
      */
     function calculatePrices() {
         let prix = 0;
+        let ship=5;
         cart.forEach(item => prix += item.price);
-        return {subtotal: prix, shipping: 5, total: prix + 5};
+        if (cart.length<1){
+            ship=0;
+        }
+        return {subtotal: prix, shipping: ship, total: prix + ship};
     }
 
 
@@ -199,12 +216,7 @@ $(document).ready(function () {
     function updatePrice(prices) {
         let mod=0;//modificateurPrixPourAnnulerLivraisonDansTotal
         $("#subtotal").text((Math.round(prices.subtotal * 100) / 100)+' $');
-        if (cart.length<1){
-            $("#shipping").text('0,00 $');
-            mod=5
-        }else {
-            $("#shipping").text('5,00 $');
-        }
+        $("#shipping").text((Math.round(prices.shipping * 100) / 100)+' $');
         $("#total").text((Math.round((prices.total-mod) * 100) / 100)+' $');
     }
 
@@ -250,15 +262,21 @@ $(document).ready(function () {
     function clearCart() {
         cart=[];
         updateCartDisplay();
-
     }
 
     /**
      * Confirme ou infirme l'achat des produits dans le cart.
      */
     function checkout() {
+        if (cart.length>0){
+            $("#order-confirmation").fadeIn();
+            // $("#order-confirmation").FadeIn(0).delay(confirmationDelay).fadeOut();
 
-
+            // clearCart()
+        }
+    }
+    function updateVentesTotal(){
+        $("#depenses-totales").text(Math.round(ventesTotales * 100) / 100);
     }
 
 

@@ -33,10 +33,10 @@ $(document).ready(function () {
                             <div class="cart-item-price">${item.price.toFixed(2)} $</div>
                         </div>
                         <div class="cart-item-controls">
-                            <button class="quantity-btn decrease" data-id="${item.id}">-</button>
+                            <button id="dec${item.id}" class="quantity-btn decrease" data-id="${item.id}">-</button>
                             <span class="item-quantity">${item.quantity}</span>
-                            <button class="quantity-btn increase" data-id="${item.id}">+</button>
-                            <button class="remove-item" data-id="${item.id}">×</button>
+                            <button id="inc${item.id}" class="quantity-btn increase" data-id="${item.id}">+</button>
+                            <button id="rem${item.id}" class="remove-item" data-id="${item.id}">×</button>
                         </div>
                     </div>`;
         return itemHtml;
@@ -96,6 +96,10 @@ $(document).ready(function () {
     function configureButtons() {
 
 
+        $("#cart-button").click(function () {
+            $(".cart-section").toggle();
+        })
+
         $("#clear-total").click(function () {
             ventesTotales = 0;
             $("#depenses-totales").text(ventesTotales);
@@ -144,7 +148,9 @@ $(document).ready(function () {
      * Met à jour le nombre d'item dans le cart.
      */
     function updateCartCount() {
-
+        let nb = 0;
+        cart.forEach(item => nb += item.quantity);
+        $(".cart-count").text(nb)
 
     }
 
@@ -153,8 +159,9 @@ $(document).ready(function () {
      * @returns {{subtotal: number, shipping: number, total: *}}
      */
     function calculatePrices() {
-
-
+        let prix = 0;
+        cart.forEach(item => prix += item.price);
+        return {subtotal: prix, shipping: 5, total: prix + 5};
     }
 
 
@@ -181,7 +188,7 @@ $(document).ready(function () {
             });
             $('.decrease').on('click', e => changeQuantity(e, -1));
             $('.increase').on('click', e => changeQuantity(e, 1));
-            $('.remove-item').on('click', e => removeItem(e));
+            $('.remove-item').on('click', e => removeItem(e,$(this)));
         }
     }
 
@@ -208,8 +215,12 @@ $(document).ready(function () {
      * Retire du cart le produit sur lequel on vient de cliquer.
      * @param event
      */
-    function removeItem(event) {
-
+    function removeItem(eve,id) {
+        // console.log(event.currentTarget.attr("data-id"));
+        // itemID = event.attr("data-id");
+        // cart=(cart.filter(!(id===itemID)));
+        // cart.forEach(item =>{if (tem.id===itemID){cart.delete(item)}});
+        console.log($(eve).attr("data-id"));
     }
 
     /**
